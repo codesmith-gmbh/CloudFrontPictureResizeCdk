@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  dev:
+    image: 'node:14.7.0'
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./:/development

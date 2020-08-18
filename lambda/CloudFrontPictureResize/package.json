@@ -1,0 +1,25 @@
+{
+  "name": "image-resizing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "test": "mocha -r ts-node/register test/**/*.test.ts"
+  },
+  "author": "Codesmith GmbH",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.59",
+    "@types/mocha": "^8.0.1",
+    "@types/node": "^14.0.27",
+    "@types/sharp": "^0.25.1",
+    "aws-sdk": "^2.729.0",
+    "mocha": "^8.1.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "sharp": "^0.25.4"
+  }
+}
