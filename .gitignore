@@ -12,3 +12,6 @@ cdk.out
 
 # Webstorm
 .idea/
+
+# dist
+dist/

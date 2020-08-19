@@ -28,13 +28,14 @@ export class CloudFrontPictureResizeCdkStack extends cdk.Stack {
         s3Bucket.grantReadWrite(lambdaRole, "scaled/*")
 
         // @ts-ignore
+        let lambdaPath = path.join(__dirname, '..', 'lambda', 'CloudFrontPictureResize');
         const resizeLambda = new lambda.Function(this, 'OriginResponseResizer', {
             runtime: lambda.Runtime.NODEJS_12_X,
-            code: lambda.Code.fromAsset('lambda/CloudFrontPictureResize/', {
+            code: lambda.Code.fromAsset(lambdaPath, {
                 bundling: {
-                    image: cdk.BundlingDockerImage.fromAsset('lambda/CloudFrontPictureResize/tools/bundling'),
+                    image: cdk.BundlingDockerImage.fromAsset(path.join(lambdaPath, 'tools', 'bundling')),
                     volumes: [{
-                        hostPath: path.join(process.cwd(), 'lambda', 'CloudFrontPictureResize'),
+                        hostPath: lambdaPath,
                         containerPath: '/development'
                     }],
                     workingDirectory: '/development'

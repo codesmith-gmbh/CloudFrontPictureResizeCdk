@@ -1,15 +1,20 @@
 {
   "name": "cloud_front_picture_resize_cdk",
   "version": "0.1.0",
-  "bin": {
-    "cloud_front_picture_resize_cdk": "bin/cloud_front_picture_resize_cdk.js"
-  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "prepack": "rm -fr dist && npm run build",
+    "prepublishOnly": "npm run test"
   },
+  "files": [
+    "dist/**/*",
+    "lambda/**/*"
+  ],
   "devDependencies": {
     "@aws-cdk/assert": "1.59.0",
     "@types/jest": "^26.0.4",
