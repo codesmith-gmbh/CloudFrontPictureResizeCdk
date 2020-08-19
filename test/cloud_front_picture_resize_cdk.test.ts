@@ -5,7 +5,7 @@ import * as CloudFrontPictureResizeCdk from '../lib/cloud_front_picture_resize_c
 test('Lambda Stack', () => {
     const app = new cdk.App();
     // WHEN
-    const stack = new CloudFrontPictureResizeCdk.CloudFrontPictureResizeCdkStack(app, 'MyTestStack');
+    const stack = new CloudFrontPictureResizeCdk.CloudFrontPictureResizeCdkStack(app, 'MyTestStack', {staticS3BucketName: "staticS3Bucket"});
     // THEN
     expectCDK(stack).to(haveResource("AWS::Lambda::Function", {
         Timeout: 30

@@ -1,20 +1,19 @@
 import * as cdk from '@aws-cdk/core';
-import {DockerVolumeConsistency, Duration} from '@aws-cdk/core';
+import {Duration} from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as path from 'path';
 
+export interface StackProps {
+    staticS3BucketName: string
+}
+
 export class CloudFrontPictureResizeCdkStack extends cdk.Stack {
-    constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
-        super(scope, id, props);
+    constructor(scope: cdk.App, id: string, stackProps: StackProps, cdkProps?: cdk.StackProps) {
+        super(scope, id, cdkProps);
 
-        const staticAssetsBucketName = new cdk.CfnParameter(this, "StaticAssetsBucketName", {
-            type: "string",
-            description: "The name of s3 bucket holding the static assets (inclusive pictures) of the WebMachine."
-        })
-
-        const s3Bucket = s3.Bucket.fromBucketName(this, "StaticAssetBucket", staticAssetsBucketName.valueAsString)
+        const s3Bucket = s3.Bucket.fromBucketName(this, "StaticAssetBucket", stackProps.staticS3BucketName)
 
         const lambdaRole = new iam.Role(this, 'AllowLambdaServiceToAssumeRole', {
             assumedBy: new iam.CompositePrincipal(
