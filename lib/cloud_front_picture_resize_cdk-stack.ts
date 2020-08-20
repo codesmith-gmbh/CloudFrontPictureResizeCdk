@@ -7,7 +7,8 @@ import * as ssm from '@aws-cdk/aws-ssm';
 import * as path from 'path';
 import * as customresources from '@aws-cdk/custom-resources';
 import {AwsCustomResourcePolicy, PhysicalResourceId} from "@aws-cdk/custom-resources";
-import {version} from "../package.json";
+
+const packageJson = require('../package.json')
 
 export interface StackProps {
     staticS3BucketName: string
@@ -44,7 +45,7 @@ export class CloudFrontPictureResizeCdkStack extends cdk.Stack {
                     image: cdk.BundlingDockerImage.fromAsset(lambdaPath),
                     workingDirectory: '/development',
                     environment: {
-                        "PACKAGE_VERSION": version
+                        "PACKAGE_VERSION": packageJson.version
                     }
                 }
             }),
