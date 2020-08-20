@@ -7,6 +7,7 @@ import * as ssm from '@aws-cdk/aws-ssm';
 import * as path from 'path';
 import * as customresources from '@aws-cdk/custom-resources';
 import {AwsCustomResourcePolicy, PhysicalResourceId} from "@aws-cdk/custom-resources";
+import {version} from "../package.json";
 
 export interface StackProps {
     staticS3BucketName: string
@@ -40,12 +41,11 @@ export class CloudFrontPictureResizeCdkStack extends cdk.Stack {
             runtime: lambda.Runtime.NODEJS_12_X,
             code: lambda.Code.fromAsset(lambdaPath, {
                 bundling: {
-                    image: cdk.BundlingDockerImage.fromAsset(path.join(lambdaPath, 'tools', 'bundling')),
-                    volumes: [{
-                        hostPath: lambdaPath,
-                        containerPath: '/development'
-                    }],
-                    workingDirectory: '/development'
+                    image: cdk.BundlingDockerImage.fromAsset(lambdaPath),
+                    workingDirectory: '/development',
+                    environment: {
+                        "PACKAGE_VERSION": version
+                    }
                 }
             }),
             handler: 'index.lambdaHandler',
@@ -55,13 +55,13 @@ export class CloudFrontPictureResizeCdkStack extends cdk.Stack {
             currentVersionOptions: {}
         })
 
-        const version = resizeLambda.currentVersion;
+        const lambdaVersion = resizeLambda.currentVersion;
 
         this.resizeFunctionVersionArnParameter = id + ResizeFunctionVersionArn
 
         const parameter = new ssm.StringParameter(this, ResizeFunctionVersionArn, {
             parameterName: this.resizeFunctionVersionArnParameter,
-            stringValue: version.functionArn
+            stringValue: lambdaVersion.functionArn
         })
     }
 

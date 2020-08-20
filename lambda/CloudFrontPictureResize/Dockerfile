@@ -2,4 +2,7 @@
 # This is necessary to extract the artificats after building.
 FROM node:12.18
 
+COPY . /development
+RUN chmod a+rwX /development
+
 ENTRYPOINT ["./tools/bundling/build.sh"]

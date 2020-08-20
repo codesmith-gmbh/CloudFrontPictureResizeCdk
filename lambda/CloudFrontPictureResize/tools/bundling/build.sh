@@ -3,10 +3,7 @@
 set -e
 
 export HOME=/development
-
-echo "Removing old artefacts"
-rm -fr node_modules
-rm -fr dist
+echo "Package Version: ${PACKAGE_VERSION}"
 
 echo "Installing npm dependencies"
 npm install
@@ -23,3 +20,6 @@ echo "Installing prod dependencies"
   cd /asset-output || exit
   npm install --only=prod
 )
+
+echo "Version File"
+echo "${PACKAGE_VERSION}" >/asset-output/VERSION
