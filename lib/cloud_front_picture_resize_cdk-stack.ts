@@ -58,7 +58,7 @@ export class CloudFrontPictureResizeCdkStack extends cdk.Stack {
 
         const lambdaVersion = resizeLambda.currentVersion;
 
-        this.resizeFunctionVersionArnParameter = id + ResizeFunctionVersionArn
+        this.resizeFunctionVersionArnParameter = "/codesmith/webmachine/" + id + "/" + ResizeFunctionVersionArn
 
         const parameter = new ssm.StringParameter(this, ResizeFunctionVersionArn, {
             parameterName: this.resizeFunctionVersionArnParameter,
