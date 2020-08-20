@@ -13,6 +13,6 @@ test('Lambda Stack', () => {
         Timeout: 30
     }))
     expectCDK(stack).to(haveResource("AWS::SSM::Parameter", {
-        Name: TestStackName + CloudFrontPictureResizeCdk.ResizeFunctionVersionArn
+        Name: "/codesmith/webmachine/" + TestStackName + "/" + CloudFrontPictureResizeCdk.ResizeFunctionVersionArn
     }))
 });
