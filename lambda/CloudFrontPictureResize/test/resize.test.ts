@@ -6,7 +6,7 @@ import {CloudFrontRequest} from "aws-lambda/common/cloudfront";
 function testRequest(path: string): CloudFrontRequest {
     return {
         clientIp: "",
-        headers: {'x-s3-bucket': [{value: "images.bucket"}]},
+        headers: {'host': [{value: "images.bucket.s3.eu-west-1.amazonaws.com"}]},
         method: "",
         querystring: "",
         uri: path
@@ -47,17 +47,24 @@ describe('analyseRequest', function () {
             unscaledPath: 'event/123/test.jpg',
             s3Bucket: 'images.bucket'
         })
+    assertAnalyseRequestCorrectness('/scaled/3200w/test/3ms-framework_%E2%80%93_resources_py.jpg',
+        {
+            intrinsicWidth: 3200,
+            contentType: 'image/jpeg',
+            unscaledPath: 'test/3ms-framework_–_resources_py.jpg',
+            s3Bucket: 'images.bucket'
+        })
     it('correctness test lambda', function () {
-        assert.strictEqual(resize.analyseRequest(
+        assert.deepStrictEqual(resize.analyseRequest(
             {
                 clientIp: "", method: "", querystring: "",
                 "uri": "/scaled/200w/events/1234/rounding.jpg",
                 "headers":
                     {
-                        "x-s3-bucket": [
+                        "host": [
                             {
-                                "key": "X-S3-Bucket",
-                                "value": "imageresizingcdkstack-images3bucket080cc34d-1aotk9hc8wpob"
+                                "key": "Host",
+                                "value": "imageresizingcdkstack-images3bucket080cc34d-1aotk9hc8wpob.s3.us-east-1.amazonaws.com"
                             }
                         ]
                     }

@@ -2,6 +2,7 @@ import {S3} from "aws-sdk";
 import {CloudFrontResponseEvent} from "aws-lambda";
 import * as sharp from 'sharp';
 import {CloudFrontRequest} from "aws-lambda/common/cloudfront";
+import {unescape} from "querystring";
 
 export class RequestAnalysis {
     s3Bucket: string
@@ -42,7 +43,7 @@ export function analyseRequest(request: CloudFrontRequest): RequestAnalysis | nu
             return null
         }
         let s3Bucket = extractBucketNameFromHost(request.headers['host'][0].value)
-        return {contentType, intrinsicWidth, unscaledPath: unscaledUri + "." + extension, s3Bucket}
+        return {contentType, intrinsicWidth, unscaledPath: unescape(unscaledUri + "." + extension), s3Bucket}
     } catch (error) {
         console.log(`Could not analyse request ${JSON.stringify(request)}: ${error}`)
         return null
@@ -50,7 +51,7 @@ export function analyseRequest(request: CloudFrontRequest): RequestAnalysis | nu
 }
 
 export function keyForRequest(request: CloudFrontRequest): string {
-    return request.uri.substring(1)
+    return unescape(request.uri.substring(1))
 }
 
 async function fetchImage(s3: S3, requestAnalysis: RequestAnalysis) {
